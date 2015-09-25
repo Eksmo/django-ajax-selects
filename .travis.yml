@@ -3,10 +3,9 @@ python:
   - "2.7"
 env:
   - TOX_ENV=flake8
-  - TOX_ENV=django15
-  - TOX_ENV=django16
   - TOX_ENV=django17
   - TOX_ENV=django18
+  - TOX_ENV=django19
 install:
  - pip install -r requirements-test.txt
 script:
