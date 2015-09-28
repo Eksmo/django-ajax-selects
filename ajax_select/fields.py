@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-import sys
 from ajax_select import get_lookup
 from django import forms
 from django.conf import settings
@@ -14,6 +13,7 @@ from django.template.defaultfilters import force_escape
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
+from django.utils import six
 try:
     import json
 except ImportError:
@@ -21,13 +21,12 @@ except ImportError:
 
 
 as_default_help = 'Enter text to search.'
-IS_PYTHON2 = sys.version_info[0] == 2
 
 
 def _as_pk(got):
     # a unicode method that checks for integers
-    if (type(got) is unicode) and got.isnumeric():
-        if IS_PYTHON2:
+    if isinstance(got, six.text_type) and got.isnumeric():
+        if six.PY2:
             return long(got)
         return int(got)
     return got
@@ -291,9 +290,7 @@ class AutoCompleteSelectMultipleField(forms.fields.CharField):
 
     @staticmethod
     def _is_string(help_text):
-        if IS_PYTHON2:
-            return type(help_text) == unicode
-        return type(help_text) == str
+        return isinstance(help_text, six.text_type)
 
     def clean(self, value):
         if not value and self.required:
