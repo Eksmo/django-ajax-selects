@@ -95,9 +95,9 @@ class LookupChannel(object):
             list: list of Model objects
         """
         # Inherited models have a OneToOneField (rather than eg AutoField)
-        if self.model._meta.pk.rel is not None:
+        if self.model._meta.pk.remote_field is not None:
             # Use the type of the field being referenced
-            pk_type = self.model._meta.pk.rel.field.to_python
+            pk_type = self.model._meta.pk.remote_field.field.to_python
         else:
             pk_type = self.model._meta.pk.to_python
 
